@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* styles.css or a similar file */
+@keyframes progressiveReveal {
+    0% {
+      clip-path: inset(100% 0 0 0);
+      opacity: 0;
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+    }
+  }
+  
+  .progressive-load {
+    animation: progressiveReveal 2s ease-out forwards;
+    opacity: 0;
+  }
+  
