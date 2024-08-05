@@ -4,7 +4,7 @@ import React from 'react';
 
 const VideoAds = () => {
   return (
-    <div className="mb-4">
+    <div className="mb-4 md:w[800px]">
       <iframe
         width="100%"
         height="315"

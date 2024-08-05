@@ -1,3 +1,5 @@
+// src/components/ImageConverter.js
+
 import React, { useRef, useState, useEffect } from 'react';
 import { convertToWebP } from '../utils/fileUtils';
 import ProcessingIndicator from './ProcessingIndicator';
@@ -126,13 +128,8 @@ const ImageConverter = ({ onProcessingComplete }) => {
     setRenameOption(false);
   };
 
-  // Define the calculateSizeReduction function
   const calculateSizeReduction = (originalSize, newSize) => {
     return (((originalSize - newSize) / originalSize) * 100).toFixed(2);
-  };
-
-  const calculateSizeIncrease = (originalSize, newSize) => {
-    return (((originalSize - newSize) / newSize) * 100).toFixed(2);
   };
 
   const calculateLoadTime = (fileSizeMB, networkSpeedMbps) => {
@@ -144,12 +141,6 @@ const ImageConverter = ({ onProcessingComplete }) => {
   const originalLoadTime = calculateLoadTime(originalFile ? originalFile.size / 1024 / 1024 : 0, 5);
   const convertedLoadTime = calculateLoadTime(convertedFile ? convertedFile.file.size / 1024 / 1024 : 0, 5);
 
-  const loadTimeDifference = (originalLoadTime / convertedLoadTime).toFixed(2);
-
-  const sizeIncrease = convertedFile && originalFile 
-    ? calculateSizeIncrease(originalFile.size, convertedFile.file.size)
-    : 0;
-
   const handleImageError = (event) => {
     event.target.src = defaultImageIcon;
     event.target.style.width = '80px';
@@ -158,40 +149,33 @@ const ImageConverter = ({ onProcessingComplete }) => {
   return (
     <div className="p-4 w-full max-w-5xl mx-auto">
       {!isProcessing && convertedFile && (
-        <button
-          onClick={resetConverter}
-          className="block mx-auto mb-4 py-2 px-6 bg-[#8E8E8E] text-white font-semibold rounded hover:bg-[#1e1e1e]"
-        >
-          Convert Another File
-        </button>
+        <p className="text-center text-xl text-[#EA552B] mb-2 font-semibold">Convert another file</p>
       )}
 
-      {!isProcessing && !convertedFile && (
-        <div
-          className={`border-2 border-dashed rounded-lg p-10 mb-4 cursor-pointer ${
-            isDragging ? 'border-green-600 bg-[FAEBE4] text-white' : 'border-[#EA552B] bg-white'
-          } hover:bg-[#EA552B] hover:text-white`}
-          style={{ width: convertedFile ? '100%' : '600px' }}
-          onClick={handleUploadClick}
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-        >
-          <div className="">
-            <p className="text-center text-xl font-bold mb-4">Drag, Drop or Click to Upload</p>
-            <p className="text-center font-medium text-lg mb-4">PNG, JPG, AVIF, HEIC</p>
-            <p className="text-center text-xs mt-2">Convert iPhone files to use on Webflow, Shopify, Figma, etc.</p>
-          </div>
-          <input
-            type="file"
-            ref={fileInputRef}
-            accept=".png, .jpg, .jpeg, .avif, .heic, .heif, image/*"
-            onChange={handleFileChange}
-            className="hidden"
-            id="file-upload"
-          />
+      <div
+        className={`border-2 border-dashed rounded-lg p-10 mb-4 cursor-pointer ${
+          isDragging ? 'border-green-600 bg-[FAEBE4] text-white' : 'border-[#EA552B] bg-white'
+        } hover:bg-[#EA552B] hover:text-white`}
+        style={{ width: convertedFile ? '100%' : '600px' }}
+        onClick={handleUploadClick}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+      >
+        <div className="">
+          <p className="text-center text-xl font-bold mb-4">Drag, Drop or Click to Upload</p>
+          <p className="text-center font-medium text-lg mb-4">PNG, JPG, AVIF, HEIC</p>
+          <p className="text-center text-xs mt-2">Convert iPhone files to use on Webflow, Shopify, Figma, etc.</p>
         </div>
-      )}
+        <input
+          type="file"
+          ref={fileInputRef}
+          accept=".png, .jpg, .jpeg, .avif, .heic, .heif, image/*"
+          onChange={handleFileChange}
+          className="hidden"
+          id="file-upload"
+        />
+      </div>
 
       {fileName && (
         <p className="text-center text-gray-600 text-sm mb-4">Converting: {fileName}</p>
@@ -229,8 +213,28 @@ const ImageConverter = ({ onProcessingComplete }) => {
               >
                 Download
               </button>
-              <div className="mt-4 flex flex-col items-center">
-                <div className="text-center mb-6">
+              <div className="mt-4 flex justify-center">
+                <div className="text-center mx-4">
+                  <h3 className="text-gray-700 font-medium mb-2">Original Image</h3>
+                  <img
+                    src={
+                      originalFile
+                        ? URL.createObjectURL(originalFile)
+                        : defaultImageIcon
+                    }
+                    onError={handleImageError}
+                    alt="Original file"
+                    className={`w-40 h-40 mx-auto border border-gray-300 rounded object-contain progressive-load`}
+                    style={{
+                      width: originalFile ? '160px' : '80px',
+                      height: '160px',
+                    }}
+                  />
+                  <p className="text-sm text-gray-600 mt-2">
+                    Size: {(originalFile?.size / 1024 / 1024).toFixed(2) || 'N/A'} MB
+                  </p>
+                </div>
+                <div className="text-center mx-4">
                   <h3 className="text-gray-700 font-bold mb-2">Converted Image</h3>
                   <img
                     src={
@@ -240,7 +244,7 @@ const ImageConverter = ({ onProcessingComplete }) => {
                     }
                     onError={handleImageError}
                     alt="Converted file"
-                    className="w-80 h-auto mx-auto border-4 border-[#7CCA83] rounded object-contain"
+                    className="w-40 h-40 mx-auto border-4 border-[#EA552B] rounded object-contain"
                   />
                   <p className="text-sm text-gray-600 mt-2">
                     Size: {(convertedFile.file.size / 1024 / 1024).toFixed(2)} MB
@@ -258,32 +262,9 @@ const ImageConverter = ({ onProcessingComplete }) => {
                   <p className="text-sm text-green-600 mt-1">
                     Loads approximately{' '}
                     <span className="font-bold">
-                      {loadTimeDifference}x
+                      {(originalLoadTime / convertedLoadTime).toFixed(2)}x
                     </span>{' '}
                     faster
-                  </p>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-gray-700 font-medium mb-2">Original Image</h3>
-                  <img
-                    src={
-                      originalFile
-                        ? URL.createObjectURL(originalFile)
-                        : defaultImageIcon
-                    }
-                    onError={handleImageError}
-                    alt="Original file"
-                    className={`w-80 h-auto mx-auto border border-gray-300 rounded object-contain progressive-load`}
-                    
-                  />
-                  <p className="text-sm text-gray-600 mt-2">
-                    Size: {(originalFile?.size / 1024 / 1024).toFixed(2) || 'N/A'} MB
-                  </p>
-                  <p className="text-sm font-semibold text-red-600 mt-1">
-                    {sizeIncrease}% bigger
-                  </p>
-                  <p className="text-sm font-semibold text-red-600 mt-1">
-                    Loads {loadTimeDifference}x slower
                   </p>
                 </div>
               </div>

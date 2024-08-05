@@ -38,7 +38,7 @@ const ProcessingIndicator = ({ messages, duration }) => {
       <div className="relative pt-1">
         <div className="overflow-hidden h-2 text-xs flex rounded bg-green-200">
           <div
-            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"
+            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-800"
             style={{ width: `${progress}%`, transition: `width ${duration}ms linear` }}
           ></div>
         </div>
