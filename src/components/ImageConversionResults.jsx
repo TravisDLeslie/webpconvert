@@ -20,7 +20,7 @@ const ImageConversionResults = ({
   resetHandler  // Expecting this prop from the parent component
 }) => {
   return (
-    <div className="flex flex-col items-center mt-12 space-y-8">
+    <div className="flex flex-col items-start mt-0 space-y-8">
       {/* Centered Reset Button */}
       <ResetConverterButton onReset={resetHandler} />
 

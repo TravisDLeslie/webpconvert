@@ -77,7 +77,7 @@ const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => {
   };
 
   return (
-    <div className="p-4 w-full max-w-5xl mx-auto">
+    <div className="p-4 w-full md:w-full max-w-5xl mx-auto">
       {!isProcessing && !convertedFile && (
         <FileUploader
           handleUploadClick={handleUploadClick}

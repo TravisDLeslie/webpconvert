@@ -14,7 +14,7 @@ import { HeaderProvider, useHeaderContext } from './context/HeaderContext'; // I
 function App() {
   return (
     <HeaderProvider> {/* Wrap the app with HeaderProvider to provide context */}
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen w-full flex flex-col">
         <HeaderWrapper />
         <div className="flex-grow flex items-center justify-center bg-white">
           <Routes>

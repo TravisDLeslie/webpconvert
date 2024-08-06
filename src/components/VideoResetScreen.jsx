@@ -47,14 +47,14 @@ const VideoResetScreen = ({ onVideoEnd }) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-start min-h-screen">
       {!showUploader && (
         <>
           <p className="mt-4 text-xl mb-8 text-center">Please wait {countdown} seconds...</p>
           <div className="relative w-full md:w-[800px] aspect-video">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1" // Replace with your YouTube video ID
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0" // Autoplay and attempt to play with sound
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

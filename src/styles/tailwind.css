@@ -54,3 +54,18 @@ h1, h2, h3, h4, h5, h6, p {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
   
+
+  /* Add this to your global CSS file */
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll {
+  display: inline-flex;
+  animation: scroll 20s linear infinite;
+}

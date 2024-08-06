@@ -22,7 +22,7 @@ const DownloadButton = ({
   };
 
   return (
-    <div className="flex justify-end items-center w-[610px] mx-auto px-8 py-4">
+    <div className="flex justify-end items-center w-full md:w-[610px] mx-auto px-8 py-4">
       {/* Left Section - Converted Text and Check Icon */}
       <div className="flex items-center mr-12">
         <p className="text-gray-800 text-2xl font-semibold">Converted</p>
