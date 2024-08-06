@@ -18,10 +18,13 @@ import FigmaIcon from '../assets/icons/figma.svg';
 import FacebookIcon from '../assets/icons/facebook.svg';
 import InstagramIcon from '../assets/icons/Instagram.svg';
 import TiktokIcon from '../assets/icons/tiktok.svg';
+import VideoResetScreen from './VideoResetScreen'; // Import the new component
 
 const Home = () => {
   const [processingComplete, setProcessingComplete] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showVideoReset, setShowVideoReset] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true); // State to control header visibility
 
   const gradientStyle = {
     width: '100%',
@@ -68,19 +71,27 @@ const Home = () => {
     { src: FacebookIcon, style: { top: '38%', left: '-20%', transform: 'translateX(-50%)', width: '80px', height: '80px' } },
     { src: InstagramIcon, style: { top: '28%', right: '-20%', transform: 'translateX(-50%)', width: '80px', height: '80px' } },
     { src: TiktokIcon, style: { top: '42%', right: '-30%', transform: 'translateX(-50%)', width: '80px', height: '80px' } },
-
   ];
 
   const handleReset = () => {
+    setShowVideoReset(true);
     setProcessingComplete(false);
     setIsProcessing(false);
+    setHeaderVisible(false); // Hide the header when showing the video reset screen
+  };
+
+  const handleVideoEnd = () => {
+    setShowVideoReset(false);
+    setHeaderVisible(true); // Show the header once the video ends
   };
 
   return (
     <div className="flex mt-24 flex-col min-h-screen bg-white relative">
-      {!processingComplete && <div className="rounded-3xl" style={gradientStyle}></div>}
+      {headerVisible && !processingComplete && !showVideoReset && (
+        <div className="rounded-3xl" style={gradientStyle}></div>
+      )}
 
-      {!processingComplete && (
+      {headerVisible && !processingComplete && !showVideoReset && (
         <DimmableContainer dim={isProcessing}>
           {iconStyles.map((icon, index) => (
             <img
@@ -95,7 +106,7 @@ const Home = () => {
       )}
 
       <div className="flex-grow flex flex-col items-center justify-start pt-12 relative z-20">
-        {!processingComplete && (
+        {headerVisible && !processingComplete && !showVideoReset && (
           <header className="text-center mb-8">
             <h1 className="text-5xl md:text-5xl font-bold text-[#1e1e1e]">
               Streamline Your Images
@@ -107,14 +118,19 @@ const Home = () => {
         )}
 
         <div className="relative z-20">
-          <ImageConverter 
-            onProcessingComplete={() => setProcessingComplete(true)} 
-            setIsProcessing={setIsProcessing}
-          />
+          {!showVideoReset ? (
+            <ImageConverter
+              onProcessingComplete={() => setProcessingComplete(true)}
+              setIsProcessing={setIsProcessing}
+              onReset={handleReset} // Pass handleReset to the ImageConverter
+            />
+          ) : (
+            <VideoResetScreen onVideoEnd={handleVideoEnd} hideHeader={setHeaderVisible} />
+          )}
         </div>
       </div>
 
-      {!processingComplete && (
+      {headerVisible && !processingComplete && !showVideoReset && (
         <DimmableContainer dim={isProcessing}>
           <div
             className="absolute bottom-[80px] left-1/2 transform -translate-x-1/2 flex justify-center items-end"

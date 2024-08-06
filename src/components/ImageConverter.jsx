@@ -9,7 +9,7 @@ import useFileHandlers from '../hooks/useFileHandlers';
 import useFilePrefix from '../hooks/useFilePrefix';
 import ImageConversionResults from './ImageConversionResults';
 
-const ImageConverter = ({ onProcessingComplete, setIsProcessing }) => {
+const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => { // Accept onReset prop
   const [convertedFile, setConvertedFile] = useState(null);
   const [originalFile, setOriginalFile] = useState(null);
   const [originalFileUrl, setOriginalFileUrl] = useState('');
@@ -76,19 +76,6 @@ const ImageConverter = ({ onProcessingComplete, setIsProcessing }) => {
     URL.revokeObjectURL(url);
   };
 
-  const resetConverter = () => {
-    setConvertedFile(null);
-    setOriginalFile(null);
-    setError('');
-    setFileName('');
-    setFileSize(0);
-    setCustomFileName('');
-    setPrefix('');
-    setRenameOption(false);
-    URL.revokeObjectURL(originalFileUrl);
-    setOriginalFileUrl('');
-  };
-
   return (
     <div className="p-4 w-full max-w-5xl mx-auto">
       {!isProcessing && !convertedFile && (
@@ -135,7 +122,7 @@ const ImageConverter = ({ onProcessingComplete, setIsProcessing }) => {
           setPrefix={setPrefix}
           triggerDownload={triggerDownload}
           generateFileName={generateFileName}
-          resetHandler={resetConverter} // Pass the resetHandler function
+          resetHandler={onReset} // Pass onReset to ImageConversionResults
         />
       )}
 
