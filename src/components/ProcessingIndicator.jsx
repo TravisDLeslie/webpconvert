@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-const ProcessingIndicator = ({ messages, duration }) => {
+const ProcessingIndicator = ({ messages, duration, filename }) => {
   const [message, setMessage] = useState('');
   const [progress, setProgress] = useState(0);
 
@@ -26,22 +26,30 @@ const ProcessingIndicator = ({ messages, duration }) => {
     }, messageIntervalDuration);
 
     // Animate the progress bar from 0% to 100% over the full duration
-    setProgress(100);
+    const progressInterval = setInterval(() => {
+      if (progress < 100) {
+        setProgress((prevProgress) => prevProgress + (100 / (duration / 1000)));
+      } else {
+        clearInterval(progressInterval);
+      }
+    }, 1000);
 
-    // Cleanup interval on component unmount
-    return () => clearInterval(messageInterval);
-  }, [duration, messages]);
+    // Cleanup intervals on component unmount
+    return () => {
+      clearInterval(messageInterval);
+      clearInterval(progressInterval);
+    };
+  }, [duration, messages, progress]);
 
   return (
-    <div className="mb-4">
-      <p className="text-center text-green-600 mb-2">{message}</p>
-      <div className="relative pt-1">
-        <div className="overflow-hidden h-2 text-xs flex rounded bg-green-200">
-          <div
-            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-800"
-            style={{ width: `${progress}%`, transition: `width ${duration}ms linear` }}
-          ></div>
-        </div>
+    <div className="w-full max-w-lg mx-auto p-2 bg-white rounded-lg shadow-md flex flex-col items-center"> {/* Adjust max-width as needed */}
+      <p className="text-center text-base font-medium mb-2">{message}</p>
+      <p className="text-center text-sm text-[#1e1e1e] font-light mb-2">{filename}</p> {/* Display the filename */}
+      <div className="relative w-full h-2.5 bg-[#DFE5E0] rounded-full overflow-hidden">
+        <div
+          className="h-full bg-[#00DB37] rounded-full"
+          style={{ width: `${progress}%`, transition: 'width 0.5s ease-in-out' }}
+        ></div>
       </div>
     </div>
   );

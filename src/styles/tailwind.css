@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  font-family: 'Poppins', sans-serif;
+}
+
 /* styles.css or a similar file */
 @keyframes progressiveReveal {
     0% {
@@ -17,5 +27,30 @@
   .progressive-load {
     animation: progressiveReveal 2s ease-out forwards;
     opacity: 0;
+  }
+  
+
+
+  @media (min-width: 768px) { /* Adjust the breakpoint to your project's specification */
+    .file-uploader { /* Ensure this class is added to your component's className */
+      min-width: 530px;
+    }
+  }
+  
+
+  .tip-card {
+    border-width: 0 0 4px 0;
+    border-style: solid;
+    width: 305px;
+    height: 220px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .tip-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
   

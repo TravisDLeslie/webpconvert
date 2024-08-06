@@ -10,26 +10,28 @@ const useProcessingSettings = (fileSize) => {
     if (fileSize < 1) {
       // Small file (< 1MB)
       setMessages([
-        'Quickly converting your small file...',
+        'Quickly converting your file...',
         'Almost done...',
       ]);
       setDuration(8000); // 8 seconds for small files
     } else if (fileSize < 5) {
       // Medium file (1MB - 5MB)
       setMessages([
-        'Converting your medium file...',
+        'Converting your file...',
         'Optimizing it...',
-        'Ensuring quality remains high...',
+        'Make sure quality is the same...',
         'Almost done...',
+        'Just touching it up...',
       ]);
       setDuration(16000); // 16 seconds for medium files
     } else {
       // Large file (>= 5MB)
       setMessages([
-        'Converting your large file...',
+        'Converting your  file...',
         'This might take a just a little longer...',
         'Ensuring quality remains high...',
         'Almost done...',
+        'Just touching it up...',
       ]);
       setDuration(24000); // 24 seconds for large files
     }

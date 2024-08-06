@@ -28,7 +28,7 @@ const useProcessingSettings = (fileSize) => {
       // Large file (>= 5MB)
       setMessages([
         'Converting your  file...',
-        'This might take a little while...',
+        'This might take a just a little longer...',
         'Ensuring quality remains high...',
         'Almost done...',
         'Just touching it up...',

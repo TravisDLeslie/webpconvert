@@ -1,86 +1,85 @@
-// src/components/RenameFile.js
+import React, { useCallback, useState } from 'react';
 
-import React, { useCallback } from 'react';
+// You may need to adjust these imports based on your file structure
+import { suggestedKeywords, suggestedTags, suggestedPrefixes } from '../data/suggestions';
 
 const RenameFile = ({
-  customFileName,
+  customFileName = '',
   setCustomFileName,
-  prefix,
+  prefix = '',
   setPrefix,
   triggerDownload,
   convertedFile,
   generateFileName,
 }) => {
-  // Use useCallback to memoize event handlers and avoid unnecessary re-renders
-  const handleFileNameChange = useCallback(
-    (e) => {
-      setCustomFileName(e.target.value);
-    },
-    [setCustomFileName]
-  );
+  const [removeSmartConvert, setRemoveSmartConvert] = useState(false);
+  const [tag, setTag] = useState('');
+  const [customTag, setCustomTag] = useState('');
+  const [customPrefix, setCustomPrefix] = useState('');
 
-  const handlePrefixChange = useCallback(
-    (e) => {
-      setPrefix(e.target.value);
-    },
-    [setPrefix]
-  );
+  const handleFileNameChange = useCallback((e) => {
+    const sanitizedFileName = e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+    setCustomFileName(sanitizedFileName);
+  }, [setCustomFileName]);
+
+  const handlePrefixChange = useCallback((e) => setPrefix(e.target.value), [setPrefix]);
+  const handleCustomPrefixChange = (e) => setCustomPrefix(e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-'));
+  const handleTagChange = (e) => setTag(e.target.value);
+  const handleCustomTagChange = (e) => setCustomTag(e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-'));
+
+  const toggleSmartConvert = () => setRemoveSmartConvert(!removeSmartConvert);
+
+  const finalFileName = generateFileName(`${prefix}${customFileName}${tag ? `-${tag}` : ''}${removeSmartConvert ? '' : '-smart-convert'}.webp`);
 
   return (
-    <div className="text-center border border-zinc-400 h-full rounded-lg p-4 mb-4 md:mb-0">
-      <p className="text-gray-700 font-bold mt-4 mb-2">Would you like to rename your file?</p>
-      <p className="text-zinc-700 text-xs font-bold mt-4 mb-2">Brand name, Project, Client, Version</p>
-      <label className="block text-sm font-normal text-gray-800 mt-6">
-        New File Name:
-        <input
-          type="text"
-          value={customFileName}
-          onChange={handleFileNameChange}
-          className="mt-2 p-4 border font-semibold border-gray-300 rounded w-full focus:border-[#EA552B] hover:border-[#EA552B] focus:outline-none focus:ring-2 focus:ring-purp"
-          placeholder="Enter custom file name"
-        />
-      </label>
-      <label className="block text-sm font-normal text-gray-800 mt-6">
-        Select a prefix:
-        <select
-          value={prefix}
-          onChange={handlePrefixChange}
-          className="mt-2 p-4 border font-semibold text-gray-00 border-gray-300 rounded w-full focus:border-[#EA552B] hover:border-[#EA552B] focus:outline-none focus:ring-2 focus:ring-[#1e1e1e]"
-        >
-          <option value="">Choose a prefix (optional)</option>
-          <option value="prod-">Product (Shopify)</option>
-          <option value="cat-">Category (Shopify)</option>
-          <option value="feat-">Featured (Shopify)</option>
-          <option value="banner-">Banner (Shopify)</option>
-          <option value="post-">Post (Facebook)</option>
-          <option value="cover-">Cover (Facebook)</option>
-          <option value="profile-">Profile (Facebook)</option>
-          <option value="ad-">Ad (General)</option>
-          <option value="fbad-">Facebook Ad</option>
-          <option value="gad-">Google Ad</option>
-          <option value="insta-">Instagram Ad</option>
-          <option value="twad-">Twitter Ad</option>
-          <option value="mock-">Mockup (Design)</option>
-          <option value="final-">Final (Design)</option>
-          <option value="draft-">Draft (Design)</option>
-          <option value="temp-">Template (Design)</option>
-          <option value="thumb-">Thumbnail (Web)</option>
-          <option value="opt-">Optimized (Web)</option>
-          <option value="hero-">Hero (Web)</option>
-          <option value="bg-">Background (Web)</option>
-        </select>
-      </label>
+    <div className="flex flex-wrap justify-between text-center bg-white  p-2 border border-gray-300 rounded-lg">
+      <div className="w-full lg:w-1/2 p-4">
+        <div className="bg-white p-2 mt-8 rounded">
+          <h2 className="font-bold text-xl">SEO Friendly Name</h2>
+          <p className='text-sm mt-2'>Change your file for best practices</p>
+          <p className='border-b mt-4'></p>
+          <div className='border rounded-xl mt-4 p-4'>
+          <button className="mt-2 bg-[#FAEC54] w-full rounded-sm text-[#1e1e1e] font-medium px-4 py-2  hover:bg-yellow-600 transition">Best Practices</button>
+          <p className='mt-4 text-xs'>between words use “-”, no spaces, use lowercase letters</p>
+          <p className="text-sm mt-8">Good Example:</p>
+            <p className='text-sm font-medium'>best-coffee-beans.webp</p>
+          <p className='text-sm mt-8'>Bad Example: </p>
+          <p className='text-sm font-medium'>best_coffee_beans.webp</p>
+          <p className='text-sm font-normal'>or</p>
+          <p className='text-sm font-medium mb-4'>best coffee beans.jpg</p>
+        </div>
+        </div>
+      </div>
+      <div className="w-full mt-8 lg:w-1/2 p-4">
+        <label className="block text-base font-semibold">
+          New File Name:
+          <p className='font-normal text-sm mt-2'>Brand, client, project or version...</p>
+          <input type="text" value={customFileName} onChange={handleFileNameChange} className="mt-4 text-sm font-normal block w-full px-4 py-2 border border-gray-300 rounded"/>
+        </label>
+        <div className="mt-8">
+          <label className="block text-base font-semibold">Choose a Prefix (Optional):</label>
+          <p className='font-normal text-sm mt-2'>Banner, product, ad ...</p>
 
-      {/* Display the new file name above the download button */}
-      <p className="text-gray-700 font-bold mt-6">{generateFileName(`${customFileName}-smart-convert.webp`)}</p>
+          <select value={prefix} onChange={handlePrefixChange} className="mt-2 block w-full text-sm px-4 py-2 border border-gray-300 rounded">
+            <option value="">Select a prefix</option>
+            {suggestedPrefixes.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
+          </select>
+          <input type="text" value={customPrefix} onChange={handleCustomPrefixChange} className="mt-2 block text-sm w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter custom prefix"/>
+        </div>
+        <div className="mt-8">
+          <label className="block text-base font-semibold">Choose a Tag (Optional):</label>
+          <p className='font-normal text-sm mt-2'>Sales, discount, limited...</p>
 
-      <button
-        onClick={() => triggerDownload(convertedFile)}
-        className="mt-6 mb-2 py-2 px-4 bg-[#EA552B] font-bold uppercase text-white rounded hover:bg-[#1e1e1e]"
-        disabled={!customFileName} // Disable button until a name is provided
-      >
-        Download
-      </button>
+          <select value={tag} onChange={handleTagChange} className="mt-2 block text-sm w-full px-4 py-2 border border-gray-300 rounded">
+            <option value="">Select a tag</option>
+            {suggestedTags.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+          <input type="text" value={customTag} onChange={handleCustomTagChange} className="mt-2 block text-sm w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter custom tag"/>
+        </div>
+        <button onClick={() => triggerDownload(convertedFile)} className="mt-6 px-4 py-2 bg-[#EA552B] w-full uppercase font-semibold text-white rounded hover:bg-[#1e1e1e] transition">Download</button>
+
+        <button onClick={toggleSmartConvert} className="mt-4 px-4 py-2 text-[#1e1e1e] text-xs rounded hover:font-semibold transition">{removeSmartConvert ? 'Add "smart-convert"' : 'Remove "smart-convert"'}</button>
+      </div>
     </div>
   );
 };
