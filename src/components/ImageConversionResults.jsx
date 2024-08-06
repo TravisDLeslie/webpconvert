@@ -7,6 +7,7 @@ import checkmark from '../assets/icons/check.svg';
 import defaultImageIcon from '../assets/icons/defaultimage.svg';
 import DownloadButton from './DownloadButton';
 import ResetConverterButton from './ResetConverterButton';
+import Header from './Header';
 
 const ImageConversionResults = ({
   convertedFile,
@@ -15,12 +16,12 @@ const ImageConversionResults = ({
   setCustomFileName,
   prefix,
   setPrefix,
-  triggerDownload,
+  triggerDownload, // Ensure this prop is being passed
   generateFileName,
   resetHandler  // Expecting this prop from the parent component
 }) => {
   return (
-    <div className="flex flex-col items-start mt-0 space-y-8">
+    <div className="flex flex-col items-center mt-12 space-y-8">
       {/* Centered Reset Button */}
       <ResetConverterButton onReset={resetHandler} />
 
@@ -41,7 +42,12 @@ const ImageConversionResults = ({
         {/* Right Column - Rename and Download */}
         <div className="flex-1 flex flex-col space-y-4">
           <div className="self-start mb-4">
-            <DownloadButton triggerDownload={triggerDownload} />
+            <DownloadButton 
+              convertedFile={convertedFile} 
+              generateFileName={generateFileName} 
+              customFileName={customFileName}
+              triggerDownload={triggerDownload} // Pass triggerDownload to DownloadButton
+            />
           </div>
           <RenameFile
             customFileName={customFileName}
