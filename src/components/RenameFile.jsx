@@ -82,8 +82,8 @@ const RenameFile = ({
             </select>
             <input type="text" value={customTag} onChange={handleCustomTagChange} className="mt-2 block text-sm w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter custom tag"/>
           </div>
-          <p className="mt-6 text-gray-700 font-semibold">Final File Name: </p>
-          <p>{finalFileName}</p>
+          <p className="mt-6 text-[gray-700] font-semibold">Final File Name: </p>
+          <p className='text-[#2C5FF1] font-semibold mt-2 border-2 p-2'>{finalFileName}</p>
 
           <button onClick={() => triggerDownload(convertedFile)} className="mt-6 px-4 py-2 bg-[#EA552B] w-full uppercase font-semibold text-white rounded hover:bg-[#1e1e1e] transition">Download</button>
 
