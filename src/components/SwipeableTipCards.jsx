@@ -1,8 +1,8 @@
-// src/components/SwipeableTipCards.js
-
 import React, { useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import TipCard from './TipCard';
+import LeftArrowIcon from '../assets/icons/leftarrow.svg';  // Replace with the path to your left arrow icon
+import RightArrowIcon from '../assets/icons/rightarrow.svg'; // Replace with the path to your right arrow icon
 
 const SwipeableTipCards = ({ tips }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,13 +38,13 @@ const SwipeableTipCards = ({ tips }) => {
 
   return (
     <div {...handlers} className="w-full md:w-auto overflow-hidden">
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center relative">
         {tips.map((tip, index) => (
           <div
             key={index}
             className={`transition-transform duration-300 ease-in-out ${
-              index === currentIndex ? 'block' : 'hidden'
-            }`}
+              index === currentIndex ? 'flex' : 'hidden'
+            } items-center`}
             style={{
               transform: hintVisible && index === currentIndex ? 'translateX(25%)' : 'translateX(0)',
               transition: hintVisible && index === currentIndex ? 'transform 0.5s ease-in-out' : 'transform 0.3s ease-in-out',
@@ -55,6 +55,10 @@ const SwipeableTipCards = ({ tips }) => {
               title={tip.title}
               description={tip.description}
               borderColor={tip.borderColor}
+              onLeftArrowClick={handleSwipedRight}
+              onRightArrowClick={handleSwipedLeft}
+              disableLeft={currentIndex === 0}
+              disableRight={currentIndex === tips.length - 1}
             />
           </div>
         ))}
