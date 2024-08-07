@@ -1,5 +1,3 @@
-// src/components/Home.js
-
 import React, { useState } from 'react';
 import ImageConverter from './ImageConverter';
 import TipCard from './TipCard';
@@ -112,7 +110,10 @@ const Home = () => {
       <div className="flex-grow flex flex-col items-center justify-start pt-2 md:pt-12 relative z-20">
         {headerVisible && !processingComplete && !showVideoReset && (
           <header className="text-center mb-8">
-            <h1 className="text-3xl md:text-5xl font-bold text-[#1e1e1e]">Streamline Your Images</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-[#1e1e1e]">
+              <span className="block md:inline">Streamline</span>
+              <span className="block md:hidden">Your Images</span>
+            </h1>
             <p className="text-base md:text-2xl text-[#1e1e1e] mt-4">The easiest way to convert files to WebP</p>
           </header>
         )}
