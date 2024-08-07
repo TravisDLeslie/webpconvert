@@ -22,7 +22,7 @@ const ImageConversionResults = ({
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <div className="flex flex-col items-center mt-12 space-y-8 w-full max-w-5xl mx-auto">
+    <div className="flex flex-col items-center mt-1 md:mt-12 md:space-y-8 w-full max-w-5xl mx-auto">
       {/* Top Row for Desktop - Reset Button and Download Section */}
       <div className="hidden md:flex justify-between items-center w-full mb-8 px-4">
         <ResetConverterButton onReset={resetHandler} />
@@ -51,7 +51,7 @@ const ImageConversionResults = ({
           {/* Mobile Dropdown for File Comparison */}
           <div className="md:hidden mb-4">
             <button 
-              className="w-full py-2 px-4 text-white text-center bg-[#2C5FF1] rounded-md flex items-center justify-center"
+              className="w-full py-2 mt-4 px-4 text-white text-center bg-[#2C5FF1] rounded-md flex items-center justify-center"
               onClick={() => setDropdownOpen(!isDropdownOpen)}
             >
               {isDropdownOpen ? 'Hide File Comparison' : 'View File Comparison'}
