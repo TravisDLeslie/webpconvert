@@ -1,13 +1,11 @@
-// src/components/ImageConversionResults.jsx
-
-import React from 'react';
+import React, { useState } from 'react';
 import ConvertedFileDisplay from './ConvertedFileDisplay';
 import RenameFile from './RenameFile';
 import checkmark from '../assets/icons/check.svg';
 import defaultImageIcon from '../assets/icons/defaultimage.svg';
 import DownloadButton from './DownloadButton';
 import ResetConverterButton from './ResetConverterButton';
-import Header from './Header';
+import DropdownIcon from '../assets/icons/dropdownwhite.svg';
 
 const ImageConversionResults = ({
   convertedFile,
@@ -16,39 +14,80 @@ const ImageConversionResults = ({
   setCustomFileName,
   prefix,
   setPrefix,
-  triggerDownload, // Ensure this prop is being passed
+  triggerDownload,
   generateFileName,
-  resetHandler  // Expecting this prop from the parent component
+  resetHandler
 }) => {
+  // State to manage the dropdown visibility for mobile
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
   return (
-    <div className="flex flex-col items-center mt-12 space-y-8">
-      {/* Centered Reset Button */}
-      <ResetConverterButton onReset={resetHandler} />
+    <div className="flex flex-col items-center mt-12 space-y-8 w-full max-w-5xl mx-auto">
+      {/* Top Row for Desktop - Reset Button and Download Section */}
+      <div className="hidden md:flex justify-between items-center w-full mb-8 px-4">
+        <ResetConverterButton onReset={resetHandler} />
+        <DownloadButton 
+          convertedFile={convertedFile} 
+          generateFileName={generateFileName} 
+          customFileName={customFileName}
+          triggerDownload={triggerDownload}
+        />
+      </div>
+
+      {/* Download Button for Mobile */}
+      <div className="w-full max-w-xs md:hidden">
+        <DownloadButton 
+          convertedFile={convertedFile} 
+          generateFileName={generateFileName} 
+          customFileName={customFileName}
+          triggerDownload={triggerDownload}
+        />
+      </div>
 
       {/* Main Content */}
-      <div className="flex flex-col md:flex-row justify-between w-full max-w-5xl space-x-0 md:space-x-4">
+      <div className="flex flex-col md:flex-row justify-between w-full space-x-0 md:space-x-4">
         {/* Left Column - Converted File Display */}
         <div className="flex-1">
-          <ConvertedFileDisplay
-            convertedFile={convertedFile}
-            originalFile={originalFile}
-            checkmark={checkmark}
-            defaultImageIcon={defaultImageIcon}
-            customFileName={customFileName}
-            generateFileName={generateFileName}
-          />
+          {/* Mobile Dropdown for File Comparison */}
+          <div className="md:hidden mb-4">
+            <button 
+              className="w-full py-2 px-4 text-white text-center bg-[#2C5FF1] rounded-md flex items-center justify-center"
+              onClick={() => setDropdownOpen(!isDropdownOpen)}
+            >
+              {isDropdownOpen ? 'Hide File Comparison' : 'View File Comparison'}
+              <img
+                src={DropdownIcon}
+                alt="Dropdown Icon"
+                className={`ml-2 transform transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`}
+              />
+            </button>
+            {isDropdownOpen && (
+              <ConvertedFileDisplay
+                convertedFile={convertedFile}
+                originalFile={originalFile}
+                checkmark={checkmark}
+                defaultImageIcon={defaultImageIcon}
+                customFileName={customFileName}
+                generateFileName={generateFileName}
+              />
+            )}
+          </div>
+          
+          {/* Desktop View - Always Show */}
+          <div className="hidden md:block">
+            <ConvertedFileDisplay
+              convertedFile={convertedFile}
+              originalFile={originalFile}
+              checkmark={checkmark}
+              defaultImageIcon={defaultImageIcon}
+              customFileName={customFileName}
+              generateFileName={generateFileName}
+            />
+          </div>
         </div>
         
         {/* Right Column - Rename and Download */}
         <div className="flex-1 flex flex-col space-y-4">
-          <div className="self-start mb-4">
-            <DownloadButton 
-              convertedFile={convertedFile} 
-              generateFileName={generateFileName} 
-              customFileName={customFileName}
-              triggerDownload={triggerDownload} // Pass triggerDownload to DownloadButton
-            />
-          </div>
           <RenameFile
             customFileName={customFileName}
             setCustomFileName={setCustomFileName}

@@ -22,7 +22,7 @@ const Header = () => {
 
       {/* Mobile Menu Icon */}
       <button className="md:hidden flex items-center" onClick={toggleMobileMenu}>
-        <img src={menuIcon} alt="Menu" className="h-6 w-6" />
+        <img src={menuIcon} alt="Menu" className="h-10 w-10" />
       </button>
 
       {/* Desktop Navigation */}
