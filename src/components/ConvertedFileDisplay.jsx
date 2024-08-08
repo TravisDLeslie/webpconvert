@@ -1,13 +1,14 @@
 import React from 'react';
 import { calculateSizeReduction, calculateLoadTime, calculateSizeIncrease } from '../utils/calculations';
 import checkIcon from '../assets/icons/check.svg'; // Ensure the path is correct
+import defaultImage from '../assets/images/default.png'; // Ensure the path is correct
 
 const ConvertedFileDisplay = ({
   convertedFile,
   originalFile,
-  defaultImageIcon,
   customFileName,
   generateFileName,
+  altText // Receive alt text prop
 }) => {
   const originalLoadTime = calculateLoadTime(originalFile ? originalFile.size / 1024 / 1024 : 0, 5);
   const convertedLoadTime = calculateLoadTime(convertedFile ? convertedFile.file.size / 1024 / 1024 : 0, 5);
@@ -18,7 +19,7 @@ const ConvertedFileDisplay = ({
     : 0;
 
   const handleImageError = (event) => {
-    event.target.src = defaultImageIcon;
+    event.target.src = defaultImage;
     event.target.style.width = '80px';
   };
 
@@ -45,10 +46,10 @@ const ConvertedFileDisplay = ({
               src={
                 convertedFile
                   ? URL.createObjectURL(convertedFile.file)
-                  : defaultImageIcon
+                  : defaultImage
               }
               onError={handleImageError}
-              alt="Converted file"
+              alt={altText} // Use alt text prop
               className="w-80 md:min-w-[400px] h-auto mx-auto rounded-2xl object-contain"
             />
             <img src={checkIcon} alt="Checkmark" className="absolute top-[-10px] right-[-10px] h-10 w-10" />
@@ -83,10 +84,10 @@ const ConvertedFileDisplay = ({
             src={
               originalFile
                 ? URL.createObjectURL(originalFile)
-                : defaultImageIcon
+                : defaultImage
             }
             onError={handleImageError}
-            alt="Original file"
+            alt={altText} // Use alt text prop
             className={`w-80 md:min-w-[400px] h-auto mx-auto rounded-2xl object-contain progressive-load`}
           />
           <p className="text-sm text-gray-600 mt-2">

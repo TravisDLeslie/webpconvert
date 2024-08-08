@@ -1,5 +1,3 @@
-// src/components/ImageConverter.jsx
-
 import React, { useState } from 'react';
 import { convertToWebP } from '../utils/fileUtils';
 import ProcessingIndicator from './ProcessingIndicator';
@@ -8,8 +6,9 @@ import useProcessingSettings from '../hooks/useProcessingSettings';
 import useFileHandlers from '../hooks/useFileHandlers';
 import useFilePrefix from '../hooks/useFilePrefix';
 import ImageConversionResults from './ImageConversionResults';
+import fallbackImage from '../assets/images/fallback.png';
 
-const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => { // Accept onReset prop
+const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => {
   const [convertedFile, setConvertedFile] = useState(null);
   const [originalFile, setOriginalFile] = useState(null);
   const [originalFileUrl, setOriginalFileUrl] = useState('');
@@ -18,7 +17,9 @@ const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => {
   const [fileName, setFileName] = useState('');
   const [fileSize, setFileSize] = useState(0);
   const [customFileName, setCustomFileName] = useState('');
+  const [altText, setAltText] = useState(''); // State for alt text
   const [renameOption, setRenameOption] = useState(false);
+  const [removeSmartConvert, setRemoveSmartConvert] = useState(false); // State to track removal
 
   const { messages, duration } = useProcessingSettings(fileSize);
   const { prefix, setPrefix, generateFileName } = useFilePrefix();
@@ -34,6 +35,7 @@ const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => {
       setFileName(file.name);
       setFileSize(file.size / 1024 / 1024);
       setOriginalFile(file);
+      setAltText(file.name); // Initialize alt text with the file name or any metadata
 
       setTimeout(async () => {
         const webPFile = await convertToWebP(file);
@@ -65,14 +67,14 @@ const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => {
     fileInputRef,
   } = useFileHandlers(handleConversion);
 
-  const triggerDownload = (fileData) => {
-    const url = URL.createObjectURL(fileData.file);
-    const newFileName = generateFileName(`${customFileName}-smart-convert.webp`);
-
+  const triggerDownload = ({ file, fileName }) => {
+    const url = URL.createObjectURL(file);
     const a = document.createElement('a');
     a.href = url;
-    a.download = newFileName;
+    a.download = fileName; // Use the fileName passed to it
+    document.body.appendChild(a);
     a.click();
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
 
@@ -93,14 +95,15 @@ const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => {
       {isProcessing && (
         <div className="flex flex-col items-center w-full">
           <img
-            src={originalFileUrl}
-            alt="Processing"
+            src={originalFileUrl || fallbackImage}
+            alt={altText || "Processing"} // Use alt text
             className="object-cover rounded-xl"
             style={{
               width: '100%',
               maxWidth: '540px',
               height: '365px'
             }}
+            onError={(e) => { e.target.onerror = null; e.target.src = fallbackImage; }} // Fallback if image fails to load
           />
           <div className="mt-4 w-[320px] flex justify-center">
             <ProcessingIndicator
@@ -122,7 +125,11 @@ const ImageConverter = ({ onProcessingComplete, setIsProcessing, onReset }) => {
           setPrefix={setPrefix}
           triggerDownload={triggerDownload}
           generateFileName={generateFileName}
-          resetHandler={onReset} // Pass onReset to ImageConversionResults
+          resetHandler={onReset}
+          removeSmartConvert={removeSmartConvert}
+          toggleSmartConvert={() => setRemoveSmartConvert(prev => !prev)}
+          altText={altText} // Pass alt text to ImageConversionResults
+          setAltText={setAltText} // Pass function to update alt text
         />
       )}
 

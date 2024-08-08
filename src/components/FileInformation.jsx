@@ -1,13 +1,13 @@
 // src/components/FileInformation.js
 import React from 'react';
-import defaultImageIcon from '../assets/icons/defaultimage.svg';
+import defaultImage from '../assets/images/default.png';
 
 const FileInformation = ({ file, title, sizeIncrease, handleImageError, isConverted }) => {
   return (
     <div className="text-center">
       <h3 className="text-gray-700 font-medium mb-2">{title}</h3>
       <img
-        src={file ? URL.createObjectURL(file) : defaultImageIcon}
+        src={file ? URL.createObjectURL(file) : defaultImage}
         onError={handleImageError}
         alt={`${title} file`}
         className={`w-80 h-auto mx-auto border ${isConverted ? 'border-4 border-[#7CCA83]' : 'border-gray-300'} rounded object-contain`}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ConvertedFileDisplay from './ConvertedFileDisplay';
 import RenameFile from './RenameFile';
 import checkmark from '../assets/icons/check.svg';
-import defaultImage from '../assets/images/default.png';
+import defaultImageIcon from '../assets/icons/defaultimage.svg';
 import DownloadButton from './DownloadButton';
 import ResetConverterButton from './ResetConverterButton';
 import DropdownIcon from '../assets/icons/dropdownwhite.svg';
@@ -16,9 +16,7 @@ const ImageConversionResults = ({
   setPrefix,
   triggerDownload,
   generateFileName,
-  resetHandler,
-  altText, // Receive alt text
-  setAltText // Receive function to update alt text
+  resetHandler
 }) => {
   // State to manage the dropdown visibility for mobile
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -68,10 +66,9 @@ const ImageConversionResults = ({
                 convertedFile={convertedFile}
                 originalFile={originalFile}
                 checkmark={checkmark}
-                defaultImageIcon={defaultImage}
+                defaultImageIcon={defaultImageIcon}
                 customFileName={customFileName}
                 generateFileName={generateFileName}
-                altText={altText} // Pass alt text
               />
             )}
           </div>
@@ -82,10 +79,9 @@ const ImageConversionResults = ({
               convertedFile={convertedFile}
               originalFile={originalFile}
               checkmark={checkmark}
-              defaultImageIcon={defaultImage}
+              defaultImageIcon={defaultImageIcon}
               customFileName={customFileName}
               generateFileName={generateFileName}
-              altText={altText} // Pass alt text
             />
           </div>
         </div>
@@ -100,8 +96,6 @@ const ImageConversionResults = ({
             triggerDownload={triggerDownload}
             convertedFile={convertedFile}
             generateFileName={generateFileName}
-            altText={altText} // Pass alt text
-            setAltText={setAltText} // Pass function to update alt text
           />
         </div>
       </div>

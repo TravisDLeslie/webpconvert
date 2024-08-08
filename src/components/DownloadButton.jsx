@@ -8,6 +8,9 @@ const DownloadButton = ({
   generateFileName,
   customFileName,
   triggerDownload, // Ensure triggerDownload is being used
+
+
+  
 }) => {
 
   return (

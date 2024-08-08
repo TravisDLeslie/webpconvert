@@ -2,7 +2,7 @@
 
 import React from 'react';
 import checkmark from '../assets/icons/check.svg'; // Ensure correct path
-import defaultImageIcon from '../assets/icons/defaultimage.svg'; // Ensure correct path
+import defaultImage from '../assets/images/default.png'; // Ensure correct path
 
 const ConversionResults = ({
   originalFile,
@@ -41,7 +41,7 @@ const ConversionResults = ({
                 src={
                   originalFile
                     ? URL.createObjectURL(originalFile)
-                    : defaultImageIcon
+                    : defaultImage
                 }
                 onError={handleImageError}
                 alt="Original file"
@@ -61,7 +61,7 @@ const ConversionResults = ({
                 src={
                   convertedFile
                     ? URL.createObjectURL(convertedFile.file)
-                    : defaultImageIcon
+                    : defaultImage
                 }
                 onError={handleImageError}
                 alt="Converted file"

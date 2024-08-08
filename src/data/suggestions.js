@@ -14,9 +14,9 @@ export const suggestedKeywords = [
   ];
   
   export const suggestedPrefixes = [
-    { value: 'prod-', label: 'Product (Shopify)' },
-    { value: 'cat-', label: 'Category (Shopify)' },
-    { value: 'feat-', label: 'Featured (Shopify)' },
+    { value: 'product-', label: 'Product (Shopify)' },
+    { value: 'category-', label: 'Category (Shopify)' },
+    { value: 'featured-', label: 'Featured (Shopify)' },
     { value: 'banner-', label: 'Banner (Shopify)' },
     { value: 'post-', label: 'Post (Facebook)' },
     { value: 'cover-', label: 'Cover (Facebook)' },
@@ -34,5 +34,11 @@ export const suggestedKeywords = [
     { value: 'opt-', label: 'Optimized (Web)' },
     { value: 'hero-', label: 'Hero (Web)' },
     { value: 'bg-', label: 'Background (Web)' },
+    { value: 'slider-', label: 'Slider' },
+    { value: 'cta-', label: 'Call to Action' },
+    { value: 'header-', label: 'Header (Web)' },
+    { value: 'footer-', label: 'footer (Web)' },
+    { value: 'avatar-', label: 'User Profile (Web)' },
+
   ];
   
