@@ -16,7 +16,7 @@ const ConversionResults = ({
   return (
     <div className="flex flex-col md:flex-row justify-center items-center mt-12 space-x-0 md:space-x-4">
       <div className="md:w-3/5 order-2 md:order-1 text-center border border-[#EA552B] rounded-lg p-4 relative">
-        <p className="text-[#EA552B] font-bold text-2xl">
+        <p className="text-[#EA552B] font-bold text-2xl md:text-base">
           Converted
         </p>
         <img
@@ -25,7 +25,7 @@ const ConversionResults = ({
           className="absolute top-[-12px] right-[-12px] h-12 w-12"
         />
         <div className="mt-4">
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 text-base mb-4">
             File didn't download? Download below:
           </p>
           <button

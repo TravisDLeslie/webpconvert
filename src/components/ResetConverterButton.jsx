@@ -13,7 +13,7 @@ const ResetConverterButton = ({ onReset }) => {
   return (
     <button
       onClick={handleReset}
-      className="block mx-auto mb-4 py-2 px-6 bg-[#A9A9A9] text-white font-semibold rounded hover:bg-[#1e1e1e]"
+      className="block mx-auto py-2 px-6 bg-[#A9A9A9] text-xs text-white font-semibold rounded hover:bg-[#1e1e1e]"
     >
       Convert Another File
     </button>
