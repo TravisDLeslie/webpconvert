@@ -32,15 +32,17 @@ const RenameFile = ({
   );
 
   const handlePrefixChange = (e) => {
-    const selectedPrefix = e.target.value.endsWith('-') ? e.target.value : `${e.target.value}-`;
+    const selectedPrefix = e.target.value;
     setPrefix(selectedPrefix);
     setCustomPrefix(''); // Clear custom prefix when a suggestion is selected
   };
 
   const handleCustomPrefixChange = (e) => {
-    const sanitizedCustomPrefix = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-    const finalPrefix = sanitizedCustomPrefix.endsWith('-') ? sanitizedCustomPrefix : `${sanitizedCustomPrefix}-`;
-    setCustomPrefix(finalPrefix);
+    const sanitizedCustomPrefix = e.target.value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    setCustomPrefix(sanitizedCustomPrefix);
     setPrefix(''); // Clear selected prefix when custom input is used
   };
 
@@ -69,7 +71,7 @@ const RenameFile = ({
 
   // Generate the final file name dynamically
   const finalFileName = `${
-    prefix || customPrefix ? `${prefix || customPrefix}` : ''
+    prefix || customPrefix ? `${(prefix || customPrefix).replace(/-$/, '')}-` : ''
   }${customFileName}${tag || customTag ? `-${tag || customTag}` : ''}${
     removeSmartConvert ? '' : '-smart-convert'
   }.webp`;
@@ -87,11 +89,11 @@ const RenameFile = ({
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('Image Info');
 
-            // Define columns
+            // Define columns with increased width
             worksheet.columns = [
-                { header: 'Image', key: 'image', width: 10 },
-                { header: 'Filename', key: 'filename', width: 30 },
-                { header: 'Alt Text', key: 'altText', width: 50 },
+                { header: 'Image', key: 'image', width: 20 }, // Increased width
+                { header: 'Filename', key: 'filename', width: 50 }, // Increased width
+                { header: 'Alt Text', key: 'altText', width: 50 }, // Increased width
             ];
 
             // Set the header row (this step is crucial for defining titles)
@@ -103,7 +105,7 @@ const RenameFile = ({
 
             // Add data to the second row
             const dataRow = worksheet.getRow(2);
-            dataRow.height = 60; // Adjust this based on your image size
+            dataRow.height = 150; // Adjust this based on your image size
 
             // Add filename and alt text to the row
             dataRow.getCell('B').value = finalFileName;
@@ -114,10 +116,10 @@ const RenameFile = ({
                 extension: 'webp',
             });
 
-            // Position the image in the same row
+            // Position the image in the first column
             worksheet.addImage(imageId, {
-                tl: { col: 0.1, row: 1.1 }, // Adjust to align with the start of the second row
-                ext: { width: 50, height: 50 }, // Adjust the size of the image to fit within the row height
+                tl: { col: 0.1, row: 1.1 }, // Position at the start of the second row
+                ext: { width: 150, height: 150 }, // Size the image 3x larger
             });
 
             // Commit changes to the data row
@@ -184,14 +186,13 @@ const RenameFile = ({
               Add a prefix (optional)
             </label>
             <p className="text-sm mt-2">
-              Prefixes: Indicate the type of content, such as banner, product, or ad. This helps in quickly identifying the purpose of the image.
+              <stong>Prefixes:</stong> Indicate the type of content, such as banner, product, or ad. This helps in quickly identifying the purpose of the image.
             </p>
-            <p className="font-normal text-sm mt-2">Banner, product, ad ...</p>
 
             <select
               value={prefix}
               onChange={handlePrefixChange}
-              className="mt-2 block w-full text-sm px-4 py-2 border border-gray-300 rounded"
+              className="mt-4 block w-full text-sm px-4 py-2 border border-gray-300 rounded"
             >
               <option value="">Select a prefix</option>
               {suggestedPrefixes.map((p) => (
@@ -202,7 +203,7 @@ const RenameFile = ({
             </select>
             <input
               type="text"
-              value={prefix || customPrefix} // Show the selected or custom prefix
+              value={customPrefix} // Show the custom prefix without the trailing hyphen
               onChange={handleCustomPrefixChange}
               className="mt-2 block text-sm w-full px-4 py-2 border border-gray-300 rounded"
               placeholder="Enter custom prefix"
@@ -216,14 +217,12 @@ const RenameFile = ({
             <p className="text-sm mt-2">
               Tags: Describe specific attributes or contexts, like sales, discount, or limited, which can be useful for categorizing and filtering.
             </p>
-            <p className="font-normal text-sm mt-4">
-              Sales, discount, limited...
-            </p>
+          
 
             <select
               value={tag}
               onChange={handleTagChange}
-              className="mt-2 block w-full text-sm px-4 py-2 border border-gray-300 rounded"
+              className="mt-4 block w-full text-sm px-4 py-2 border border-gray-300 rounded"
             >
               <option value="">Select a tag</option>
               {suggestedTags.map((t) => (
@@ -254,7 +253,7 @@ const RenameFile = ({
               type="text"
               value={altText}
               onChange={(e) => setAltText(e.target.value)}
-              className="mt-2 block text-sm w-full px-4 py-2 border border-gray-300 rounded"
+              className="mt-4 block text-sm w-full px-4 py-2 border border-gray-300 rounded"
               placeholder="Enter alt text"
             />
           </div>

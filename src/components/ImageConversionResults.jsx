@@ -24,9 +24,9 @@ const ImageConversionResults = ({
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <div className="flex flex-col items-center mt-1 md:mt-12 md:space-y-8 w-full max-w-5xl mx-auto">
+    <div className="flex flex-col items-center mt-1 md:mt-2 md:space-y-8 w-full max-w-5xl mx-auto">
       {/* Top Row for Desktop - Reset Button and Download Section */}
-      <div className="hidden md:flex justify-between items-center w-full mb-8 px-4">
+      <div className="hidden md:flex justify-between items-center w-full mb-4 px-4">
         <ResetConverterButton onReset={resetHandler} />
         <DownloadButton 
           convertedFile={convertedFile} 
