@@ -251,7 +251,7 @@ const RenameFile = ({
             <div className="w-full md:w-1/2 px-4">
               <label className="block text-base font-semibold">
                 <span className="block text-[#EA552B] font-semibold text-sm mt-4 mb-2">Step 4:</span>
-                <p className='text-sm font-bold'>Add Alt Text for SEO</p>
+                <p className='text-xs font-bold'>Add Alt Text for SEO</p>
               </label>
               <p className="text-xs mt-2">
                 Describe your image. Alt text helps search engines understand the content of your image.
@@ -260,17 +260,17 @@ const RenameFile = ({
                 type="text"
                 value={altText}
                 onChange={(e) => setAltText(e.target.value)}
-                className="mt-4 block text-sm w-full px-4 py-2 border border-gray-300 rounded"
+                className="mt-4 block text-xs w-full px-4 py-2 border border-gray-300 rounded"
                 placeholder="Enter alt text"
               />
             </div>
           </div>
-
+          <span className="block text-[#EA552B] font-semibold text-sm mt-8 px-4 ">Step 5:</span>
           <button
             onClick={handleDownload}
-            className="mt-8 px-4 py-2 bg-[#EA552B] w-full uppercase font-semibold text-white rounded hover:bg-[#1e1e1e] transition"
+            className="mt-2 px-4 py-2 bg-[#EA552B] w-full uppercase font-semibold text-white rounded hover:bg-[#1e1e1e] transition"
           >
-            Step 5: Download SEO Optimized File Name
+            Download SEO Optimized File Name
           </button>
           <div className="text-xs text-center">
             <p className="mt-4 text-xs">Both the Image and an Excel File will download</p>
